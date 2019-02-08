@@ -105,9 +105,10 @@ class Layout extends Document
     protected function injectResources()
     {
 
+        $currentCSSCollection = $this->dom->head->find('link[rel=stylesheet]');
+
 
         $this->componentManager->registerComponent($this);
-
 
         $javascriptAnchor = $this->dom->find($this->bodyEndSelector);
 
@@ -129,6 +130,17 @@ class Layout extends Document
         foreach ($cssList as $css) {
             $this->dom->head->append($css->render()."\n");
         }
+
+
+        if($currentCSSCollection->length()) {
+            foreach ($currentCSSCollection->getElements() as $link) {
+                $this->dom->head->append($link);
+                $this->dom->head->append("\n");
+            }
+        }
+
+
+
 
     }
 
