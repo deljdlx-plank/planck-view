@@ -55,6 +55,21 @@ class Layout extends Document
     }
 
 
+    public function addResources($resources)
+    {
+        foreach ($resources as $resource) {
+            if($resource instanceof \Phi\HTML\JavascriptFile) {
+
+                $this->addJavascriptFile($resource);
+            }
+            else if($resource instanceof CSSFile) {
+                $this->addCSSFile($resource);
+            }
+        }
+        return $this;
+    }
+
+
     public function addResourcesFromResponses($responses)
     {
 
