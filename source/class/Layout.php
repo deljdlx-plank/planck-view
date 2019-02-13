@@ -4,7 +4,7 @@ namespace Planck\View;
 
 use Phi\HTML\CSSFile;
 use Phi\HTML\Document;
-use Planck\Application;
+use Planck\Application\Application;
 use Planck\Exception;
 use Planck\Traits\IsApplicationObject;
 use Planck\Traits\HasLocalResource;

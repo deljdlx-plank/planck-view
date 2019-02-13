@@ -3,7 +3,7 @@
 namespace Planck\View;
 
 use Phi\Event\Traits\Listenable;
-use Planck\Application;
+use Planck\Application\Application;
 use Planck\Exception;
 use Planck\Model\Entity;
 use Planck\Traits\HasLocalResource;
