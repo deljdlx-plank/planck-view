@@ -21,6 +21,12 @@ class Layout extends Document
      */
     protected $componentManager;
 
+    /**
+     * @var Theme
+     */
+    protected $theme;
+
+
 
     /**
      * @var Application
@@ -53,6 +59,24 @@ class Layout extends Document
             $this->componentManager = $this->getDefaultComponentManager();
         }
     }
+
+
+    public function setTheme(Theme $theme)
+    {
+        $this->theme = $theme;
+        return $this;
+    }
+
+    /**
+     * @return Theme
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+
+
 
 
     public function addResources($resources)
@@ -120,16 +144,43 @@ class Layout extends Document
     protected function injectResources()
     {
 
-        $currentCSSCollection = $this->dom->head->find('link[rel=stylesheet]');
-
-
         $this->componentManager->registerComponent($this);
 
+
+        //=======================================================
+        if($this->theme->hasJavascriptPackage()) {
+            $javascriptPackageFile = realpath($this->getTheme()->getJavascriptPackageFile());
+
+            $packageDescriptor = json_decode(
+                file_get_contents($javascriptPackageFile),
+                true
+            );
+
+            foreach ($packageDescriptor['javascripts'] as $key => $packageName) {
+                $url = 'theme/planck-theme-planck-board/asset/javascript/'.$packageName;
+                $packageDescriptor[$key] = $url;
+            }
+
+            foreach ($packageDescriptor['css'] as $key => $packageName) {
+                $url = 'theme/planck-theme-planck-board/asset/css/'.$packageName;
+                $packageDescriptor[$key] = $url;
+            }
+
+
+
+
+
+            $this->componentManager->registerPackage($packageDescriptor);
+        }
+        //=======================================================
+
+
+
+
+
+        //=======================================================
         $javascriptAnchor = $this->dom->find($this->bodyEndSelector);
-
-
         $javascripts = $this->componentManager->getJavascripts();
-
 
         foreach ($javascripts as $javascript) {
             $javascriptKey = $javascript->getSource();
@@ -141,12 +192,17 @@ class Layout extends Document
             }
         }
 
+        //=======================================================
+
         $cssList = $this->componentManager->getCSS();
         foreach ($cssList as $css) {
             $this->dom->head->append($css->render()."\n");
         }
 
+        //=======================================================
 
+
+        $currentCSSCollection = $this->dom->head->find('link[rel=stylesheet]');
         if($currentCSSCollection->length()) {
             foreach ($currentCSSCollection->getElements() as $link) {
                 $this->dom->head->append($link);
