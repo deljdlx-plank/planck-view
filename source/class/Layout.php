@@ -173,10 +173,10 @@ class Layout extends Document
 
 
         //=======================================================
-        if($this->theme->hasJavascriptPackage()) {
-
-            $this->registerPackage();
-
+        if($this->theme)  {
+            if($this->theme->hasJavascriptPackage()) {
+                $this->registerPackage();
+            }
         }
         //=======================================================
 
