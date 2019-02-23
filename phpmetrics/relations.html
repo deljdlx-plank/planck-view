@@ -49,7 +49,7 @@
 <div class="page">
     <div class="content">
         <div class="report-details">
-            Created at 2019-02-13 11:24:31        , with PHPMetrics v2.4.1 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2019-02-23 10:41:21        , with PHPMetrics v2.4.1 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
 
@@ -264,12 +264,23 @@
         "relations": []
     },
     {
+        "name": "\\Phi\\HTML\\JavascriptFile",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Phi\\HTML\\CSSFile",
+        "size": 3000,
+        "relations": []
+    },
+    {
         "name": "\\Planck\\View\\Layout",
         "size": 3000,
         "relations": [
             "\\Phi\\HTML\\Document",
-            "\\Planck\\Application",
+            "\\Planck\\Application\\Application",
             "\\parent",
+            "\\Planck\\View\\Theme",
             "\\Planck\\Exception",
             "\\Planck\\View\\ComponentManager"
         ]
@@ -280,16 +291,41 @@
         "relations": []
     },
     {
-        "name": "\\Planck\\Application",
+        "name": "\\Planck\\Application\\Application",
         "size": 3000,
         "relations": []
+    },
+    {
+        "name": "\\Planck\\View\\Theme",
+        "size": 3000,
+        "relations": [
+            "\\Planck\\Exception\\DoesNotExist",
+            "\\layoutName",
+            "\\className"
+        ]
     },
     {
         "name": "\\Planck\\View\\Package",
         "size": 3000,
         "relations": [
-            "\\Planck\\View\\Component"
+            "\\Planck\\View\\Component",
+            "\\parent"
         ]
+    },
+    {
+        "name": "\\Planck\\Exception\\DoesNotExist",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\layoutName",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\className",
+        "size": 3000,
+        "relations": []
     }
 ];
 
