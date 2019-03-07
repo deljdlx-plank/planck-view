@@ -4,8 +4,9 @@ namespace Planck\View;
 
 use Phi\Traits\Introspectable;
 use Planck\Exception\DoesNotExist;
+use Planck\Helper\File;
 
-class Theme
+abstract class Theme
 {
 
     use Introspectable;
@@ -19,14 +20,18 @@ class Theme
     protected $layouts = [];
 
 
+    abstract public function getJavascriptURLRoot();
+    abstract public function getCSSURLRoot();
+
+
     public function __construct()
     {
-        $this->sourceFilepath = $this->getDefinitionFolder();
+        $this->sourceFilepath = File::normalize($this->getDefinitionFolder());
 
         /*
          * theme root folder - from ./theme/source/class to ./theme
          */
-        $this->filepath = realpath($this->sourceFilepath.'/../..');
+        $this->filepath = File::normalize(realpath($this->sourceFilepath.'/../..'));
     }
 
     public function getFilepath()
@@ -43,6 +48,11 @@ class Theme
             throw new DoesNotExist('Javascript filepath does not exist ('.$this->filepath.'/asset/javascript'.')');
         }
     }
+
+
+
+
+
 
     public function hasJavascriptPackage()
     {

@@ -4,6 +4,7 @@ namespace Planck\View;
 
 use Phi\HTML\CSSFile;
 use Phi\HTML\Document;
+use Phi\Routing\Response;
 use Planck\Application\Application;
 use Planck\Exception;
 use Planck\Traits\IsApplicationObject;
@@ -94,6 +95,9 @@ class Layout extends Document
     }
 
 
+    /**
+     * @param Response[] $responses
+     */
     public function addResourcesFromResponses($responses)
     {
 
@@ -150,17 +154,32 @@ class Layout extends Document
             true
         );
 
-        foreach ($packageDescriptor['javascripts'] as $key => $packageName) {
-            $url = 'theme/planck-theme-planck-board/asset/javascript/'.$packageName;
-            $packageDescriptor[$key] = $url;
+        foreach ($packageDescriptor['javascripts'] as $javascript => $packageName) {
+            $url = $this->theme->getJavascriptURLRoot().'/'.$packageName;
+            $packageDescriptor[$javascript] = $url;
         }
 
         foreach ($packageDescriptor['css'] as $key => $packageName) {
-            $url = 'theme/planck-theme-planck-board/asset/css/'.$packageName;
-            $packageDescriptor[$key] = $url;
+            $url = $this->theme->getCSSURLRoot().'/'.$packageName;
+            $packageDescriptor[$javascript] = $url;
         }
 
         $this->componentManager->registerPackage($packageDescriptor);
+
+
+        $packageRoute = $this->getApplication()->buildRoute(
+            '/tool/resource/api[/tool/resource/jsonp]',
+            array(
+                $this->theme->getJavascriptURLRoot().'/package.json',
+                'Planck.Extension.ViewComponent.RemoteComponentLoader.setLoadedAssets'
+            )
+        );
+        $this->componentManager->addJavascriptFile(
+            $packageRoute,
+            $this->componentManager::RESOURCE_PRIORITY_RUNTIME
+        );
+
+        //$this->componentManager->
 
         return $this;
     }
